@@ -9,17 +9,22 @@ import SwiftUI
 
 struct DetailedView: View {
     @ObservedObject var viewModel: PhotosearchViewModel
+    @State var favorite = false
     var body: some View {
         NavigationView {
             ScrollView {
-                pictureView
+                ZStack {
+                    pictureView
+                }
                 pictureInfoView
                 actionView
                     .padding()
                 Spacer()
             }
-            .navigationTitle("Selected picture")
+            .navigationTitle("Picture's ID: \(viewModel.selectedPhoto.id)")
             .navigationBarTitleDisplayMode(.inline)
+        }.onAppear {
+            favorite = viewModel.selectedPhoto.favorite
         }
     }
     var pictureView: some View {
@@ -50,9 +55,7 @@ struct DetailedView: View {
     var pictureInfoView: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Date created: \(viewModel.selectedPhoto.created_at)")
-                Text("Place: \(viewModel.selectedPhoto.location)")
-                Text("Times donwloaded: \(viewModel.selectedPhoto.downloads)")
+                Text("Created: \(viewModel.selectedPhoto.created_at)")
             }
             .font(.headline)
             .padding()
@@ -62,10 +65,15 @@ struct DetailedView: View {
     var actionView: some View {
         HStack {
             Button {
-                //
+                if !favorite {
+                    viewModel.addPhotoToFavoritePhotos(photo: viewModel.selectedPhoto)
+                } else {
+                    viewModel.removePhotoFromFavoritePhotos(photo: viewModel.selectedPhoto)
+                }
+                favorite = !favorite
+                
             } label: {
-                Image(systemName: "heart.fill")
-                    .foregroundColor(.red)
+                Text(favorite ? "Remove from favorite" : "Add to favorite")
             }
             .font(.largeTitle)
         }

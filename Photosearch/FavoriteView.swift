@@ -29,15 +29,13 @@ struct FavoriteView: View {
         ]
         return ScrollView {
             LazyVGrid(columns: threeColumnGrid, alignment: .leading, spacing: 0) {
-                ForEach(viewModel.favoritePhotos, id: \.id) { photo in
+                ForEach(viewModel.randomPhotos.filter({ $0.favorite }), id: \.id) { photo in
                     NavigationLink(destination: DetailedView(viewModel: viewModel), isActive: $navigate) {
                         pictureView(photo: photo)
                             .padding(2)
                             .onTapGesture {
                                 viewModel.selectPhoto(photo: photo)
-                                withAnimation(Animation.easeInOut(duration: 2)) {
-                                    navigate.toggle()
-                                }
+                                navigate.toggle()
                     }
                     }
                 }

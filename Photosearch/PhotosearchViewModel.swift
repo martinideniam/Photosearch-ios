@@ -18,66 +18,56 @@ class PhotosearchViewModel: ObservableObject {
     }
     
     var favoritePhotos: Array<Photo> {
-        model.favoritePhotos
+        return model.randomPhotos.filter { photo in
+            photo.favorite == true
+        }
     }
     
     var selectedPhoto: Photo {
         model.selectedPhoto
     }
     
-    func addPhotoToRandomPhotos(id: String, created_at: String, url: String, downloads: Int, username: String, location: String?) {
-        model.addPhotoToRandomPhotos(id: id, created_at: created_at, url: url, downloads: downloads, username: username, location: location)
+    func addPhotoToRandomPhotos(id: String, created_at: String, url: String, username: String) {
+        model.addPhotoToRandomPhotos(id: id, created_at: created_at, url: url, username: username)
     }
     
-    func addPhotoToFavoritePhotos(id: String, created_at: String, url: String, downloads: Int, username: String, location: String?) {
-        model.addPhotoToFavoritePhotos(id: id, created_at: created_at, url: url, downloads: downloads, username: username, location: location)
+    func addPhotoToFavoritePhotos(photo: Photo) {
+        model.addPhotoToFavoritePhotos(photo: photo)
+    }
+    
+    func removePhotoFromFavoritePhotos(photo: Photo) {
+        model.removePhotoFromFavoritePhotos(photo: photo)
+    }
+    
+    func removeAllPhotos() {
+        model.removeAllRandomPhotos()
     }
     
     func selectPhoto(photo: Photo) {
         model.selectPhoto(photo: photo)
     }
     
-    func generateRandomPictures() {
-        if let pictures = parseLocalFile(forName: "data") {
-            for picture in pictures {
-                let id = picture.id
-                let created_at = picture.created_at
-                let url = picture.urls.small
-                let downloads = picture.downloads
-                let username = picture.user.username
-                let location = picture.location
-                addPhotoToRandomPhotos(id: id, created_at: created_at, url: url, downloads: downloads, username: username, location: location)
-            }
+    func loadData(searchQuery: String) async {
+        let key = ""
+        let url = "https://api.unsplash.com/search/photos?page=1&query=\(searchQuery)&client_id=\(key)&per_page=20"
+        guard let url = URL(string: url) else {
+            print("invalid url")
+            return
         }
-    }
-    
-    init() {
-        generateRandomPictures()
-        print(randomPhotos)
-    }
-    
-    func readLocalFile(forName name: String) -> Data? {
         do {
-            if let bundlePath = Bundle.main.path(forResource: name,
-                                                 ofType: "json"),
-                let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8) {
-                return jsonData
+            let (data, _) = try await URLSession.shared.data(from: url)
+            if let decodedResponse = try? JSONDecoder().decode(Results.self, from: data) {
+                for picture in decodedResponse.results {
+                    let id = picture.id
+                    let created_at = picture.created_at
+                    let url = picture.urls.small
+                    let username = picture.user.username
+                    addPhotoToRandomPhotos(id: id, created_at: created_at, url: url, username: username)
+                }
             }
         } catch {
-            print(error)
+            print("invalid data")
         }
-        
-        return nil
-    }
-    
-    func parseLocalFile(forName name: String) -> [Picture]? {
-        if let data = readLocalFile(forName: name) {
-            if let decodedResponse = try? JSONDecoder().decode([Picture].self, from: data) {
-                print(decodedResponse)
-                return decodedResponse
-            }
-        }
-        return nil
     }
     
 }

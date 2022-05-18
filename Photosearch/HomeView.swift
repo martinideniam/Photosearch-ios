@@ -21,6 +21,11 @@ struct HomeView: View {
                 picturesView
             }
             .navigationBarHidden(true)
+            .onAppear {
+                Task {
+                    await viewModel.loadData(searchQuery: "random")
+                }
+            }
         }
     }
     
@@ -28,6 +33,12 @@ struct HomeView: View {
         HStack {
             TextField("What are you looking for?", text: $text)
             Image(systemName: "magnifyingglass")
+                .onTapGesture {
+                    Task {
+                        viewModel.removeAllPhotos()
+                        await viewModel.loadData(searchQuery: text)
+                    }
+                }
         }
         .padding()
         .overlay(alignment: .center) {
@@ -50,9 +61,7 @@ struct HomeView: View {
                             .padding(2)
                             .onTapGesture {
                                 viewModel.selectPhoto(photo: photo)
-                                withAnimation(Animation.easeInOut(duration: 2)) {
-                                    navigate.toggle()
-                                }
+                                navigate.toggle()
                     }
                     }
                 }
