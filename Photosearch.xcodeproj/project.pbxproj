@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07616F0F2835305F003E9585 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 07616F0E2835305F003E9585 /* data.json */; };
 		07616F1128353A7D003E9585 /* ForLocalFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07616F1028353A7D003E9585 /* ForLocalFiles.swift */; };
 		07CEDB8D2834CBB6008199D5 /* Pictures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CEDB8C2834CBB6008199D5 /* Pictures.swift */; };
 		07CEDB912834CF45008199D5 /* PhotosearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CEDB902834CF45008199D5 /* PhotosearchModel.swift */; };
@@ -22,7 +21,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		07616F0E2835305F003E9585 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data.json; path = ../../../Desktop/data.json; sourceTree = "<group>"; };
 		07616F1028353A7D003E9585 /* ForLocalFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForLocalFiles.swift; sourceTree = "<group>"; };
 		07CEDB8C2834CBB6008199D5 /* Pictures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pictures.swift; sourceTree = "<group>"; };
 		07CEDB902834CF45008199D5 /* PhotosearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosearchModel.swift; sourceTree = "<group>"; };
@@ -70,7 +68,6 @@
 				07D34CDA2834178B003BFF37 /* PhotosearchApp.swift */,
 				07D34CDC2834178B003BFF37 /* ContentView.swift */,
 				07CEDB8C2834CBB6008199D5 /* Pictures.swift */,
-				07616F0E2835305F003E9585 /* data.json */,
 				07CEDB902834CF45008199D5 /* PhotosearchModel.swift */,
 				07CEDB922834D124008199D5 /* PhotosearchViewModel.swift */,
 				07616F1028353A7D003E9585 /* ForLocalFiles.swift */,
@@ -150,7 +147,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07D34CE22834178D003BFF37 /* Preview Assets.xcassets in Resources */,
-				07616F0F2835305F003E9585 /* data.json in Resources */,
 				07D34CDF2834178D003BFF37 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
