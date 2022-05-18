@@ -9,6 +9,7 @@ import Foundation
 
 struct PhotosearchModel {
     private(set) var randomPhotos: Array<Photo> = []
+    private(set) var favoritePhotos: Array<Photo> = []
     private(set) var selectedPhoto = Photo(id: "",
                                            created_at: "",
                                            url: "",
@@ -57,14 +58,14 @@ struct PhotosearchModel {
     }
     
     mutating func addPhotoToFavoritePhotos(photo: Photo) {
-        if let index = randomPhotos.firstIndex(where: {$0.id == photo.id}) {
-            randomPhotos[index].favorite = true
+        if !favoritePhotos.contains(where: {$0.id == photo.id}) {
+            favoritePhotos.append(photo)
         }
     }
     
     mutating func removePhotoFromFavoritePhotos(photo: Photo) {
-        if let index = randomPhotos.firstIndex(where: {$0.id == photo.id}) {
-            randomPhotos[index].favorite = false
+        if let index = favoritePhotos.firstIndex(where: {$0.id == photo.id }) {
+            favoritePhotos.remove(at: index)
         }
     }
 }

@@ -24,7 +24,7 @@ struct DetailedView: View {
             .navigationTitle("Picture's ID: \(viewModel.selectedPhoto.id)")
             .navigationBarTitleDisplayMode(.inline)
         }.onAppear {
-            favorite = viewModel.selectedPhoto.favorite
+            favorite = viewModel.favoritePhotos.contains(where: {$0.id == viewModel.selectedPhoto.id})
         }
     }
     var pictureView: some View {

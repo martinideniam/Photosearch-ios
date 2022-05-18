@@ -18,9 +18,7 @@ class PhotosearchViewModel: ObservableObject {
     }
     
     var favoritePhotos: Array<Photo> {
-        return model.randomPhotos.filter { photo in
-            photo.favorite == true
-        }
+        return model.favoritePhotos
     }
     
     var selectedPhoto: Photo {
