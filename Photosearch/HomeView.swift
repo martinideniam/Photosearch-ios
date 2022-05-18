@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject var viewModel: PhotosearchViewModel
+    @State var navigate: Bool = false
     @State var text: String = ""
     
     var body: some View {
@@ -42,30 +44,42 @@ struct HomeView: View {
         ]
         return ScrollView {
             LazyVGrid(columns: threeColumnGrid, alignment: .leading, spacing: 0) {
-                ForEach(1..<100) { _ in
-                    NavigationLink {
-                        Text("hello")
-                    } label: {
-                        NavigationLink(destination: DetailedView()) {
-                            pictureView
-                        }
+                ForEach(viewModel.randomPhotos, id: \.id) { photo in
+                    NavigationLink(destination: DetailedView(viewModel: viewModel), isActive: $navigate) {
+                        pictureView(photo: photo)
+                            .padding(2)
+                            .onTapGesture {
+                                viewModel.selectPhoto(photo: photo)
+                                withAnimation(Animation.easeInOut(duration: 2)) {
+                                    navigate.toggle()
+                                }
+                    }
                     }
                 }
             }
         }
     }
-    
-    var pictureView: some View {
-        Image("image")
-            .resizable()
-            .aspectRatio(1, contentMode: .fill)
-            .border(Color.white)
+}
+
+struct pictureView: View {
+    var photo: PhotosearchModel.Photo
+    var body: some View {
+        Group {
+            AsyncImage(url: URL(string: photo.url)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+            } placeholder: {
+                ProgressView()
+            }
+        }
     }
 }
 
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        let viewModel = PhotosearchViewModel()
+        HomeView(viewModel: viewModel)
     }
 }

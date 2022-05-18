@@ -11,7 +11,8 @@ import SwiftUI
 struct PhotosearchApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let viewModel = PhotosearchViewModel()
+            ContentView(viewModel: viewModel)
         }
     }
 }

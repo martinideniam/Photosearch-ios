@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var viewModel: PhotosearchViewModel
     var body: some View {
         TabView {
-            HomeView()
+            HomeView(viewModel: viewModel)
                 .tabItem {
                     VStack {
                         Image(systemName: "house.fill")
                     }
                 }
-            FavoriteView()
+            FavoriteView(viewModel: viewModel)
                 .tabItem {
                     Image(systemName: "heart.fill")
                         .padding()
@@ -28,6 +29,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let viewModel = PhotosearchViewModel()
+        ContentView(viewModel: viewModel)
     }
 }

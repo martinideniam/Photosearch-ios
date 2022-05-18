@@ -8,27 +8,24 @@
 import SwiftUI
 
 struct DetailedView: View {
+    @ObservedObject var viewModel: PhotosearchViewModel
     var body: some View {
         NavigationView {
             ScrollView {
                 pictureView
-                    .frame(width: .infinity)
                 pictureInfoView
                 actionView
                     .padding()
                 Spacer()
             }
-            .navigationTitle("Name of the picture")
+            .navigationTitle("Selected picture")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
     var pictureView: some View {
         ZStack(alignment: .bottomTrailing) {
-            Image("image")
-                .resizable()
-                .aspectRatio(1, contentMode: .fill)
-                .border(Color.white)
-            Text("Author: Vladislav Gorovenko")
+            imageView
+            Text("Author: \(viewModel.selectedPhoto.username)")
                 .padding(4)
                 .background(.black)
                 .foregroundColor(.white)
@@ -36,12 +33,26 @@ struct DetailedView: View {
                 .offset(x: -5, y: -5)
         }
     }
+    
+    var imageView: some View {
+        let urlString = viewModel.selectedPhoto.url
+        return Group {
+            AsyncImage(url: URL(string: urlString)) { image in
+                image
+                    .resizable()
+            } placeholder: {
+                ProgressView()
+            }
+            .scaledToFill()
+        }
+    }
+    
     var pictureInfoView: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Date created: 04.04.1994")
-                Text("Place: Azov")
-                Text("Times donwloaded: 2405000")
+                Text("Date created: \(viewModel.selectedPhoto.created_at)")
+                Text("Place: \(viewModel.selectedPhoto.location)")
+                Text("Times donwloaded: \(viewModel.selectedPhoto.downloads)")
             }
             .font(.headline)
             .padding()
@@ -63,6 +74,7 @@ struct DetailedView: View {
 
 struct DetailedView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailedView()
+        let viewModel = PhotosearchViewModel()
+        DetailedView(viewModel: viewModel)
     }
 }
